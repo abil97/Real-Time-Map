@@ -38,7 +38,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GetAWebResourceTask dataFetcher;                // Some stuff for making async. task
     LatLng Astana = new LatLng(51.18, 71.45);       // This is default location, where camera on map will be initially looking
 
-    private static final String API_KEY = "42a4fd234571acd3ad844f8ffd4f74f7";   // API Key is necessary for making a request.
+    private static final String API_KEY = ;   // API Key is necessary for making a request.
 
 
     // The HashMap of cities with coordinates
