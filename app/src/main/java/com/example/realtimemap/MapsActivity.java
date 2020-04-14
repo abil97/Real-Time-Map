@@ -4,6 +4,7 @@ import androidx.fragment.app.FragmentActivity;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -50,6 +51,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         put("Kostanay", new HashMap<String, Double>(){{ put("lat", 53.17); put("lon", 63.58); }});
         put("Atyrau", new HashMap<String, Double>(){{ put("lat", 47.12); put("lon", 51.88); }});
         put("Semey", new HashMap<String, Double>(){{ put("lat", 50.41); put("lon", 80.23); }});
+        put("Aktau", new HashMap<String, Double>(){{ put("lat", 43.65); put("lon", 51.20); }});
+        put("Taraz", new HashMap<String, Double>(){{ put("lat", 42.90); put("lon", 71.37); }});
+        put("Aktobe", new HashMap<String, Double>(){{ put("lat", 50.28); put("lon", 57.20); }});
+        put("Pavlodar", new HashMap<String, Double>(){{ put("lat", 52.30); put("lon", 76.94); }});
+        put("Kyzylorda", new HashMap<String, Double>(){{ put("lat", 44.86); put("lon", 65.51); }});
+        put("Kokshetau", new HashMap<String, Double>(){{ put("lat", 53.28); put("lon", 69.39); }});
+        put("Zhezqazghan", new HashMap<String, Double>(){{ put("lat", 47.78); put("lon", 67.77); }});
 
     }};
 
@@ -176,24 +184,37 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 e.printStackTrace();
             }
 
-                HashMap<String, Double> coords = cities.get(currentCity);               // Get coordinates of current city
-                LatLng MapCoords = new LatLng(coords.get("lat"), coords.get("lon"));    // Initialize a new Google map LatLng object with coords
+            HashMap<String, Double> coords = cities.get(currentCity);               // Get coordinates of current city
+            LatLng MapCoords = new LatLng(coords.get("lat"), coords.get("lon"));    // Initialize a new Google map LatLng object with coords
 
 
-                String weatherType = getWeatherType(currentCity);                           // Get weather type
-                Double temp = getTemp(currentCity);                                         // Get temperature and round up to 1 decimal place
-                String roundedTemp = String.format("%.1f", temp);
-                String res = currentCity + "\n" + weatherType + ", " + roundedTemp + "°";   // Final String of data (weather type, temp) to be displayed on map
+            String weatherType = getWeatherType(currentCity);                           // Get weather type
+            Double temp = getTemp(currentCity);                                         // Get temperature and round up to 1 decimal place
+            String roundedTemp = String.format("%.1f", temp);
+            String res = currentCity + "\n" + weatherType + ", " + roundedTemp + "°";   // Final String of data (weather type, temp) to be displayed on map
 
+            int color;
 
-                // Generate a new GoogleMAp icon with Android Utility Library
-                // https://developers.google.com/maps/documentation/android-sdk/utility
-                IconGenerator micongen = new IconGenerator(MapsActivity.this);
-                Bitmap mBitmap = micongen.makeIcon(res);
+            if(temp < 0)
+                color = Color.rgb(51, 85, 255);
+            else if(temp >= 0 && temp < 10)
+                color = Color.CYAN;
+            else if(temp >= 10 && temp < 20)
+                color = Color.YELLOW;
+            else if(temp >= 20 && temp < 30)
+                color = Color.rgb(255, 184, 51);
+            else
+                color = Color.rgb(252, 119, 37 );
 
-                // Add marker with data on the map
-                mMap.addMarker(new MarkerOptions().position(MapCoords).icon(BitmapDescriptorFactory
-                        .fromBitmap(mBitmap)).title(currentCity));
+            // Generate a new GoogleMAp icon with Android Utility Library
+            // https://developers.google.com/maps/documentation/android-sdk/utility
+            IconGenerator micongen = new IconGenerator(MapsActivity.this);
+            micongen.setColor(color);
+            Bitmap mBitmap = micongen.makeIcon(res);
+
+            // Add marker with data on the map
+            mMap.addMarker(new MarkerOptions().position(MapCoords).icon(BitmapDescriptorFactory
+                    .fromBitmap(mBitmap)).title(currentCity));
 
 
 
